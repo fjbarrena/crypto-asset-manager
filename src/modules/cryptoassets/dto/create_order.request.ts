@@ -17,8 +17,8 @@ export class CreateOrderRequest {
   quantity: number;
 
   @ApiProperty({
-    description: "UserId which will buy it"
+    description: 'UserId which will buy it',
   })
   @IsUUID()
-  buyerId: string
+  buyerId: string;
 }

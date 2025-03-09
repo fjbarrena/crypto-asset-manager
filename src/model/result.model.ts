@@ -1,14 +1,14 @@
 type Success<T> = {
-    success: T;
-    failure?: never;
-}
+  success: T;
+  failure?: never;
+};
 
 type Failure<U> = {
-    success?: never;
-    failure: U;
-}
+  success?: never;
+  failure: U;
+};
 
-export type Result<T, U> = NonNullable<Success<T> | Failure<U>>
+export type Result<T, U> = NonNullable<Success<T> | Failure<U>>;
 
 export type UnwrapResult = <T, U>(e: Result<T, U>) => NonNullable<T | U>;
 
@@ -19,18 +19,18 @@ export const unwrapResult: UnwrapResult = <T, U>({
   if (failure !== undefined && success !== undefined) {
     throw new Error(
       `Received both success and failure values at runtime when opening an Result\nSuccess: ${JSON.stringify(
-        success
-      )}\nFailure: ${JSON.stringify(failure)}`
+        success,
+      )}\nFailure: ${JSON.stringify(failure)}`,
     );
   }
   if (success !== undefined) {
-    return success as NonNullable<T>; 
+    return success as NonNullable<T>;
   }
   if (failure !== undefined) {
     return failure as NonNullable<U>;
   }
   throw new Error(
-    `Received no left or right values at runtime when opening Either`
+    `Received no left or right values at runtime when opening Either`,
   );
 };
 

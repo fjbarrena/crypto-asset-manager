@@ -8,28 +8,28 @@ export class Order extends BaseEntity {
   @Column({
     type: 'enum',
     enum: Coins,
-    enumName: "Coins",
+    enumName: 'Coins',
   })
   asset: Coins;
 
   @Column({
     type: 'integer',
-    unsigned: true
+    unsigned: true,
   })
   quantity: number;
 
   @Column({
     type: 'float',
-    unsigned: true
+    unsigned: true,
   })
   priceUSD: number;
 
   @Column({
     type: 'float',
-    unsigned: true
+    unsigned: true,
   })
   priceEUR: number;
 
-  @ManyToOne(() => User, user => user.id)
-  buyer: User
+  @ManyToOne(() => User, (user) => user.id)
+  buyer: User;
 }

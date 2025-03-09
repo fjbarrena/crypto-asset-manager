@@ -18,7 +18,7 @@ const AppDataSource = {
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/**/*.migration{.ts,.js}'],
   migrationsRun: true,
-  logging: configService.get<string>(Settings.DATABASE_LOGGING)
+  logging: configService.get<string>(Settings.DATABASE_LOGGING),
 };
 
 export default AppDataSource as TypeOrmModuleOptions;

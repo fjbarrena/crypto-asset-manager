@@ -37,7 +37,7 @@ export class CryptoassetsController {
   async createOrder(@Body() order: CreateOrderRequest) {
     const result = await this.orderService.createOrder(order);
 
-    if(isFailure(result)) {
+    if (isFailure(result)) {
       throw result.failure;
     } else {
       return result.success;

@@ -11,7 +11,9 @@ export class CoingeckoService {
 
   constructor(private readonly configService: ConfigService) {
     const key = this.configService.get<string>(Settings.COINGECKO_API_KEY);
-    const coingeckoBaseUrl = this.configService.get<string>(Settings.COINGECKO_API_BASE_URL);
+    const coingeckoBaseUrl = this.configService.get<string>(
+      Settings.COINGECKO_API_BASE_URL,
+    );
 
     if (!key) {
       throw new InternalServerErrorException(
@@ -34,12 +36,14 @@ export class CoingeckoService {
     });
   }
 
-  public async getCurrentCoinsPrice(coins: Coins[]): Promise<CoinsPriceResponse> {
+  public async getCurrentCoinsPrice(
+    coins: Coins[],
+  ): Promise<CoinsPriceResponse> {
     const res = await this.axiosClient.get(
       `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd&precision=2`,
     );
 
-    console.log(res.data)
+    console.log(res.data);
 
     return res.data as CoinsPriceResponse;
   }

@@ -18,24 +18,29 @@ export class UserService {
       username: request.username,
       encryptedPassword: BcryptService.hashPassword(request.plainPassword),
       role: request.role,
-      balance: request.initialBalance
+      balance: request.initialBalance,
     });
     return this.userRepository.save(user);
   }
 
-  async updateBalance(userId: string, amount: number): Promise<Result<boolean, HttpException>> {
+  async updateBalance(
+    userId: string,
+    amount: number,
+  ): Promise<Result<boolean, HttpException>> {
     const user = await this.findById(userId);
 
-    const newBalance = user.balance + amount
+    const newBalance = user.balance + amount;
 
-    const updateResult = await this.userRepository.update({id: user.id}, {balance: newBalance})
-    
-    if(updateResult.affected === 1) {
-      return makeSuccess(true)
+    const updateResult = await this.userRepository.update(
+      { id: user.id },
+      { balance: newBalance },
+    );
+
+    if (updateResult.affected === 1) {
+      return makeSuccess(true);
     } else {
-      return makeFailure(new NotFoundException(`User ${userId} not found`))
+      return makeFailure(new NotFoundException(`User ${userId} not found`));
     }
-
   }
 
   async getAllUsers(): Promise<User[]> {

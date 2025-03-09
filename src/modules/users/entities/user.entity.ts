@@ -23,16 +23,16 @@ export class User extends BaseEntity {
   role: Role;
 
   @Column({
-    type: "float",
-    default: 0.00
+    type: 'float',
+    default: 0.0,
   })
   balance: number;
 
   @Column({
-    enum: Fiat
+    enum: Fiat,
   })
   balanceCurrency: Fiat;
 
-  @OneToMany(() => Order, order => order.buyer)
-  orders: Order[]
+  @OneToMany(() => Order, (order) => order.buyer)
+  orders: Order[];
 }

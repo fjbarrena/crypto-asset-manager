@@ -11,10 +11,7 @@ export class BcryptService {
    * @param hashedPassword Password hashed
    * @returns true if both are equals, false in other case
    */
-  static isPasswordCorrect(
-    passwordToCheck,
-    hashedPassword,
-  ): boolean {
+  static isPasswordCorrect(passwordToCheck, hashedPassword): boolean {
     return bcrypt.compareSync(passwordToCheck, hashedPassword);
   }
 }

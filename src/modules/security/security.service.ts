@@ -16,19 +16,21 @@ export class SecurityService {
 
     if (user) {
       const passwordCorrect = BcryptService.isPasswordCorrect(
-        plainPassword, user.encryptedPassword)
+        plainPassword,
+        user.encryptedPassword,
+      );
 
-      if(passwordCorrect) {
+      if (passwordCorrect) {
         const payload = { sub: user.id, username: user.username };
         return {
           access_token: await this.jwtService.signAsync(payload),
         };
       } else {
         // Give no specific details for security
-        throw new UnauthorizedException()
+        throw new UnauthorizedException();
       }
     } else {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
   }
 
