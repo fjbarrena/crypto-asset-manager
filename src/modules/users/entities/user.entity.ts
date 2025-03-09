@@ -2,6 +2,7 @@ import { BaseEntity } from 'src/entities/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { Role } from '../enums/role.enum';
 import { Order } from 'src/modules/cryptoassets/entities/order.entity';
+import { Fiat } from 'src/model/fiat.enum';
 
 @Entity()
 export class User extends BaseEntity {
@@ -26,6 +27,11 @@ export class User extends BaseEntity {
     default: 0.00
   })
   balance: number;
+
+  @Column({
+    enum: Fiat
+  })
+  balanceCurrency: Fiat;
 
   @OneToMany(() => Order, order => order.buyer)
   orders: Order[]

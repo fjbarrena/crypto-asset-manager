@@ -14,7 +14,7 @@ const AppDataSource = {
   username: configService.get<string>(Settings.DATABASE_USER),
   password: configService.get<string>(Settings.DATABASE_PASSWORD),
   database: configService.get<string>(Settings.DATABASE_NAME),
-  synchronize: true,
+  synchronize: false,
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/**/*.migration{.ts,.js}'],
   migrationsRun: true,
