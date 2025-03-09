@@ -21,8 +21,8 @@ async function bootstrap() {
 
   app.use(helmet());
   app.use(cookieParser());
-  app.use(bodyParser.json({ limit: 10 }));
-  app.use(bodyParser.urlencoded({ limit: 10, extended: true }));
+  app.use(bodyParser.json({ limit: '100kb' }));
+  app.use(bodyParser.urlencoded({ limit: '100kb', extended: true }));
 
   const config = new DocumentBuilder()
     .setTitle('Crypto Assets API')
