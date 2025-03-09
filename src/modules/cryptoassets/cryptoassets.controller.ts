@@ -9,6 +9,7 @@ import { CoingeckoService } from './coingecko.service';
 import { Coins } from 'src/model/coins.enum';
 import { OrderService } from './order.service';
 import { CreateOrderRequest } from './dto/create_order.request';
+import { isFailure } from 'src/model/result.model';
 
 @ApiTags('cryptoassets')
 @ApiBearerAuth()
@@ -34,6 +35,12 @@ export class CryptoassetsController {
 
   @Post('/order')
   async createOrder(@Body() order: CreateOrderRequest) {
-    this.orderService.createOrder(order);
+    const result = await this.orderService.createOrder(order);
+
+    if(isFailure(result)) {
+      throw result.failure;
+    } else {
+      return result.success;
+    }
   }
 }

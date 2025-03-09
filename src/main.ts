@@ -7,6 +7,7 @@ import * as cookieParser from 'cookie-parser';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   // OpenTelemetry
@@ -19,6 +20,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  app.useGlobalPipes(new ValidationPipe());
   app.use(helmet());
   app.use(cookieParser());
   app.use(bodyParser.json({ limit: '100kb' }));
