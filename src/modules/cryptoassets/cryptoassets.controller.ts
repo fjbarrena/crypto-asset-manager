@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCookieAuth,
@@ -12,11 +12,13 @@ import { CreateOrderRequest } from './dto/create_order.request';
 import { isFailure } from 'src/model/result.model';
 import { OrderResponse } from './dto/order.response';
 import { CoinsPriceResponse } from './dto/coins_price.response';
+import { JwtGuard } from '../security/guards/jwt.guard';
 
 @ApiTags('cryptoassets')
 @ApiBearerAuth()
 @ApiCookieAuth('crypto-cookie')
 @Controller('cryptoassets')
+@UseGuards(JwtGuard)
 export class CryptoassetsController {
   constructor(
     private readonly coinGeckoService: CoingeckoService,
