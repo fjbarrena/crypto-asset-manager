@@ -27,9 +27,15 @@ export class UserService {
 
   async findByUsername(username: string): Promise<User> {
     const res = await this.userRepository.find({
-      where: {
-        username: username,
-      },
+      where: { username: username },
+    });
+
+    return res[0];
+  }
+
+  async findById(id: string): Promise<User> {
+    const res = await this.userRepository.find({
+      where: { id },
     });
 
     return res[0];
