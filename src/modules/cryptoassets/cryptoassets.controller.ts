@@ -10,6 +10,8 @@ import { Coins } from 'src/model/coins.enum';
 import { OrderService } from './order.service';
 import { CreateOrderRequest } from './dto/create_order.request';
 import { isFailure } from 'src/model/result.model';
+import { OrderResponse } from './dto/order.response';
+import { CoinsPriceResponse } from './dto/coins_price.response';
 
 @ApiTags('cryptoassets')
 @ApiBearerAuth()
@@ -23,9 +25,9 @@ export class CryptoassetsController {
 
   @Get('/prices/current')
   @ApiOperation({
-    summary: 'Gets crypto current prices',
+    summary: 'Gets all crypto current prices',
   })
-  async getPrices() {
+  async getPrices(): Promise<CoinsPriceResponse> {
     return this.coinGeckoService.getCurrentCoinsPrice([
       Coins.BITCOIN,
       Coins.ETHEREUM,
@@ -34,7 +36,7 @@ export class CryptoassetsController {
   }
 
   @Post('/order')
-  async createOrder(@Body() order: CreateOrderRequest) {
+  async createOrder(@Body() order: CreateOrderRequest): Promise<OrderResponse> {
     const result = await this.orderService.createOrder(order);
 
     if (isFailure(result)) {
