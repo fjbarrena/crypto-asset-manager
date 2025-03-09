@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Settings } from '../../model/settings.enum';
 import { Coins } from 'src/model/coins.enum';
 import axios, { AxiosInstance } from 'axios';
+import { CoinsPriceResponse } from './dto/coins_price.response';
 
 @Injectable()
 export class CoingeckoService {
@@ -33,10 +34,13 @@ export class CoingeckoService {
     });
   }
 
-  public async getCurrentCoinsPrice(coins: Coins[]): Promise<any> {
+  public async getCurrentCoinsPrice(coins: Coins[]): Promise<CoinsPriceResponse> {
     const res = await this.axiosClient.get(
-      `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd`,
+      `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd&precision=2`,
     );
-    return res.data;
+
+    console.log(res.data)
+
+    return res.data as CoinsPriceResponse;
   }
 }

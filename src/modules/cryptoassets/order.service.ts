@@ -37,6 +37,8 @@ export class OrderService {
       return makeFailure(new BadRequestException("Specified asset to buy does not exist"))
     }
 
+    console.log(price[request.assetToBuy]?.eur)
+
     return makeSuccess(new Order())
   }
 }
