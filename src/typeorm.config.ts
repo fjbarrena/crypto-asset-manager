@@ -10,7 +10,7 @@ const configService = new ConfigService();
 const AppDataSource = {
   type: 'postgres',
   host: configService.get<string>(Settings.DATABASE_HOST),
-  port: 5432,
+  port: configService.get<number>(Settings.DATABASE_PORT) || 5432,
   username: configService.get<string>(Settings.DATABASE_USER),
   password: configService.get<string>(Settings.DATABASE_PASSWORD),
   database: configService.get<string>(Settings.DATABASE_NAME),
@@ -18,7 +18,7 @@ const AppDataSource = {
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/**/*.migration{.ts,.js}'],
   migrationsRun: true,
-  logging: true
+  logging: configService.get<string>(Settings.DATABASE_LOGGING)
 };
 
 export default AppDataSource as TypeOrmModuleOptions;
