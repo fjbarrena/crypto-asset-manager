@@ -40,10 +40,8 @@ export class CoingeckoService {
     coins: Coins[],
   ): Promise<CoinsPriceResponse> {
     const res = await this.axiosClient.get(
-      `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd&precision=2`,
+      `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd&precision=full`,
     );
-
-    console.log(res.data);
 
     return res.data as CoinsPriceResponse;
   }
