@@ -6,7 +6,7 @@ export class AddedBalanceToUser1741551980712 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         Logger.log(`🤖🤖🤖🤖🤖🤖🤖🤖 Running migration AddedBalanceToUser1741551980712`)
         await queryRunner.query(
-            `ALTER TABLE "user" ADD COLUMN "balance" money DEFAULT 0`,
+            `ALTER TABLE "user" ADD COLUMN "balance" float DEFAULT 0`,
         )
     }
 

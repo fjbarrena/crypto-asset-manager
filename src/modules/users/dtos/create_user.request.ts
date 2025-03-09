@@ -16,4 +16,9 @@ export class CreateUserRequest {
     description: 'Role of the user',
   })
   role: Role;
+
+  @ApiProperty({
+    description: 'Initial balance of the user',
+  })
+  initialBalance: number;
 }

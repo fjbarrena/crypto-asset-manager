@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, PreconditionFailedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
@@ -37,8 +37,25 @@ export class OrderService {
       return makeFailure(new BadRequestException("Specified asset to buy does not exist"))
     }
 
-    console.log(price[request.assetToBuy]?.eur)
+    const amount = request.quantity * price[request.assetToBuy]?.usd!
 
-    return makeSuccess(new Order())
+    if(user.balance < amount) {
+      return makeFailure(new PreconditionFailedException("User does not have enough funds"))
+    }
+
+    this.repository.create()
+    
+
+    const dirtyOrder = this.repository.create({
+          asset: request.assetToBuy,
+          buyer: user,
+          priceEUR: price[request.assetToBuy]?.eur!,
+          priceUSD: price[request.assetToBuy]?.usd!,
+          quantity: request.quantity
+        });
+    
+    const order = await this.repository.save(dirtyOrder);
+
+    return makeSuccess(order)
   }
 }

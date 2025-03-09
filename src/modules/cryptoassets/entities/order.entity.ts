@@ -19,13 +19,13 @@ export class Order extends BaseEntity {
   quantity: number;
 
   @Column({
-    type: 'money',
+    type: 'float',
     unsigned: true
   })
   priceUSD: number;
 
   @Column({
-    type: 'money',
+    type: 'float',
     unsigned: true
   })
   priceEUR: number;

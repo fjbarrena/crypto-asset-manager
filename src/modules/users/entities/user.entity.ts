@@ -22,7 +22,8 @@ export class User extends BaseEntity {
   role: Role;
 
   @Column({
-    type: "money"
+    type: "float",
+    default: 0.00
   })
   balance: number;
 

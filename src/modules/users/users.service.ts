@@ -17,6 +17,7 @@ export class UserService {
       username: request.username,
       encryptedPassword: BcryptService.hashPassword(request.plainPassword),
       role: request.role,
+      balance: request.initialBalance
     });
     return this.userRepository.save(user);
   }
@@ -27,7 +28,7 @@ export class UserService {
 
   async findByUsername(username: string): Promise<User> {
     const res = await this.userRepository.find({
-      where: { username: username },
+      where: { username },
     });
 
     return res[0];
