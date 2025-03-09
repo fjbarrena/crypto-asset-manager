@@ -1,11 +1,12 @@
-import { BadRequestException, HttpException, Injectable, PreconditionFailedException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { BadRequestException, HttpException, Injectable, InternalServerErrorException, Logger, PreconditionFailedException } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { CreateOrderRequest } from './dto/create_order.request';
 import { CoingeckoService } from './coingecko.service';
 import { UserService } from '../users/users.service';
-import { makeFailure, makeSuccess, Result } from 'src/model/result.model';
+import { isSuccess, makeFailure, makeSuccess, Result } from 'src/model/result.model';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class OrderService {
@@ -14,6 +15,7 @@ export class OrderService {
     private readonly repository: Repository<Order>,
     private readonly coinGeckoService: CoingeckoService,
     private readonly userService: UserService,
+    private readonly dataSource: DataSource,
   ) {}
 
   async getAll(): Promise<Order[]> {
@@ -37,15 +39,13 @@ export class OrderService {
       return makeFailure(new BadRequestException("Specified asset to buy does not exist"))
     }
 
-    const amount = request.quantity * price[request.assetToBuy]?.usd!
+    // Take users currency
+    const amount = request.quantity * price[request.assetToBuy]![user.balanceCurrency]!
 
     if(user.balance < amount) {
       return makeFailure(new PreconditionFailedException("User does not have enough funds"))
     }
-
-    this.repository.create()
     
-
     const dirtyOrder = this.repository.create({
           asset: request.assetToBuy,
           buyer: user,
@@ -54,8 +54,24 @@ export class OrderService {
           quantity: request.quantity
         });
     
-    const order = await this.repository.save(dirtyOrder);
+    const newBalance = user.balance - amount
 
-    return makeSuccess(order)
+    const queryRunner = this.dataSource.createQueryRunner()
+    await queryRunner.connect();
+    await queryRunner.startTransaction()
+
+    try {
+      const order = await queryRunner.manager.getRepository(Order).save(dirtyOrder);
+      await queryRunner.manager.getRepository(User).update({id: user.id}, {balance: newBalance});
+      await queryRunner.commitTransaction();
+
+      return makeSuccess(order);
+    } catch (ex) {
+      Logger.error("Error updating users balance. Rollback", ex);
+      await queryRunner.rollbackTransaction();
+      return makeFailure(new InternalServerErrorException('Error updating users balance. Rollback'))
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
