@@ -21,6 +21,11 @@ export class User extends BaseEntity {
   })
   role: Role;
 
+  @Column({
+    type: "money"
+  })
+  balance: number;
+
   @OneToMany(() => Order, order => order.buyer)
   orders: Order[]
 }

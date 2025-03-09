@@ -10,22 +10,11 @@ import { User } from './modules/users/entities/user.entity';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { Order } from './modules/cryptoassets/entities/order.entity';
+import AppDataSource from './typeorm.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'crypto_admin',
-      password: 'super_strong_password',
-      database: 'crypto_db',
-      entities: [
-        User,
-        Order
-      ],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(AppDataSource),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
