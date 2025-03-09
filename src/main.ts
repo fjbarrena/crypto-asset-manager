@@ -8,6 +8,7 @@ import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { ValidationPipe } from '@nestjs/common';
+import { GenericExceptionFilter } from './filters/generic-exception.filter';
 
 async function bootstrap() {
   // OpenTelemetry
@@ -19,6 +20,9 @@ async function bootstrap() {
   });
 
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalFilters(new GenericExceptionFilter());
+
 
   app.useGlobalPipes(new ValidationPipe());
   app.use(helmet());
