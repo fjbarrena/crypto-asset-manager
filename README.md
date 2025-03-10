@@ -1,8 +1,6 @@
-# Servicio de Gestión de Criptoactivos
-
-Para ejecutar el proyecto
-
 > ⚠️ Recuerda revisar las variables de entorno en `docker-compose.yml` y añadir tu API key de CoinGecko en `COINGECKO_API_KEY`
+
+Para ejecutar el proyecto, sencillamente ejecuta
 
 ```shell
 docker compose up -d
