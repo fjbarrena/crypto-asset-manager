@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { BcryptService } from './bcrypt.service';
 import { isSuccess } from 'src/model/result.model';
+import { LoginResponse } from './dtos/login.response';
 
 @Injectable()
 export class SecurityService {
@@ -12,7 +13,7 @@ export class SecurityService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(username: string, plainPassword: string): Promise<any> {
+  async login(username: string, plainPassword: string): Promise<LoginResponse> {
     const user = await this.userService.findByUsername(username);
 
     if (isSuccess(user)) {
@@ -23,9 +24,7 @@ export class SecurityService {
 
       if (passwordCorrect) {
         const payload = { sub: user.success.id, username: user.success.username };
-        return {
-          access_token: await this.jwtService.signAsync(payload),
-        };
+        return new LoginResponse(await this.jwtService.signAsync(payload))
       } else {
         // Give no specific details for security
         throw new UnauthorizedException();

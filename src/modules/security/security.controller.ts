@@ -6,6 +6,7 @@ import { UserService } from '../users/users.service';
 import { CreateUserRequest } from '../users/dtos/create_user.request';
 import { UserResponse } from '../users/dtos/user.response';
 import { isSuccess } from 'src/model/result.model';
+import { LoginResponse } from './dtos/login.response';
 
 @ApiTags('security')
 @Controller('security')
@@ -18,7 +19,7 @@ export class SecurityController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOperation({})
-  async login(@Body() login: LoginRequest) {
+  async login(@Body() login: LoginRequest): Promise<LoginResponse> {
     return this.securityService.login(login.username, login.plainPassword);
   }
 
