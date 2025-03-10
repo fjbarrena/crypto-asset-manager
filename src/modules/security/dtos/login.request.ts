@@ -3,7 +3,7 @@ import { IsString } from 'class-validator';
 
 export class LoginRequest {
   @ApiProperty({
-    description: 'Unique username',
+    description: 'Username to login',
   })
   @IsString()
   username: string;
