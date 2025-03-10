@@ -15,6 +15,7 @@ import { Fiat } from 'src/model/fiat.enum';
 import { CoinsPriceResponse } from './dto/coins_price.response';
 import { isFailure, isSuccess, Result } from 'src/model/result.model';
 import { HttpException } from '@nestjs/common';
+import { JwtTokenResponse } from '../security/dtos/jwt-token.response';
 
 export type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
@@ -108,6 +109,11 @@ describe('OrderService', () => {
         },
       } as Result<CoinsPriceResponse, HttpException>;
 
+      const mockJwtToken = {
+        sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
+        username: 'r2d2'
+      } as JwtTokenResponse
+
       const request = new CreateOrderRequest();
       request.assetToBuy = Coins.BITCOIN;
       request.quantity = 1;
@@ -151,7 +157,7 @@ describe('OrderService', () => {
         .spyOn(datasource, 'createQueryRunner')
         .mockResolvedValue(mockQueryRunner as never);
 
-      const response = await orderService.createOrder(request);
+      const response = await orderService.createOrder(request, mockJwtToken);
       expect(isSuccess(response)).toBeTruthy();
       expect(response.failure).toBeUndefined();
       expect(response.success).not.toBeUndefined();
@@ -170,6 +176,11 @@ describe('OrderService', () => {
         username: 'r2d2',
       },
     } as Result<User, HttpException>;
+
+    const mockJwtToken = {
+      sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
+      username: 'r2d2'
+    } as JwtTokenResponse
 
     const mockPrice = {
       success: {
@@ -191,7 +202,7 @@ describe('OrderService', () => {
       .spyOn(coingeckoService, 'getCurrentCoinsPrice')
       .mockResolvedValueOnce(mockPrice);
 
-    const response = await orderService.createOrder(request);
+    const response = await orderService.createOrder(request, mockJwtToken);
     expect(isFailure(response)).toBeTruthy();
     expect(response.failure?.name).toBe('PreconditionFailedException');
     expect(response.failure?.message).toContain('funds');
@@ -208,12 +219,17 @@ describe('OrderService', () => {
       },
     } as Result<User, HttpException>;
 
+    const mockJwtToken = {
+      sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
+      username: 'r2d2'
+    } as JwtTokenResponse
+
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;
     request.quantity = 0;
     request.buyerId = mockUser.success!.id;
 
-    const response = await orderService.createOrder(request);
+    const response = await orderService.createOrder(request, mockJwtToken);
     expect(isFailure(response)).toBeTruthy();
     expect(response.failure?.name).toBe('BadRequestException');
     expect(response.failure?.message).toContain('zero');
@@ -230,12 +246,17 @@ describe('OrderService', () => {
       },
     } as Result<User, HttpException>;
 
+    const mockJwtToken = {
+      sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
+      username: 'r2d2'
+    } as JwtTokenResponse
+
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;
     request.quantity = 0;
     request.buyerId = mockUser.success!.id;
 
-    const response = await orderService.createOrder(request);
+    const response = await orderService.createOrder(request, mockJwtToken);
     expect(isFailure(response)).toBeTruthy();
     expect(response.failure?.name).toBe('BadRequestException');
     expect(response.failure?.message).toContain('zero');

@@ -47,7 +47,7 @@ export class CryptoassetsController {
 
   @Post('/order')
   async createOrder(@Body() order: CreateOrderRequest, @JwtToken() token: JwtTokenResponse): Promise<OrderResponse> {
-    const result = await this.orderService.createOrder(order, token.sub);
+    const result = await this.orderService.createOrder(order, token);
 
     if (isSuccess(result)) {
       return result.success;

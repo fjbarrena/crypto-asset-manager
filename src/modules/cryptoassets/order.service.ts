@@ -23,6 +23,7 @@ import {
 import { User } from '../users/entities/user.entity';
 import { OrderResponse } from './dto/order.response';
 import { Role } from '../users/enums/role.enum';
+import { JwtTokenResponse } from '../security/dtos/jwt-token.response';
 
 @Injectable()
 export class OrderService {
@@ -65,7 +66,7 @@ export class OrderService {
   */
   async createOrder(
     request: CreateOrderRequest,
-    invokerId: string,
+    invoker: JwtTokenResponse,
   ): Promise<Result<OrderResponse, HttpException>> {
     if (request.quantity <= 0) {
       return makeFailure(
@@ -75,9 +76,9 @@ export class OrderService {
 
     const user = await this.userService.findById(request.buyerId);
 
-    if(request.buyerId !== invokerId) {
+    if(request.buyerId !== invoker.sub) {
       // Only admins can create orders in name of other users
-      const invokerUser = await this.userService.findById(invokerId);
+      const invokerUser = await this.userService.findById(invoker.sub);
       if(isSuccess(invokerUser)) {
         if(invokerUser.success.role !== Role.ADMIN) {
           return makeFailure(new UnauthorizedException(`Buyer and invoker are not the same`))
@@ -116,6 +117,7 @@ export class OrderService {
       priceEUR: price.success[request.assetToBuy]?.eur!,
       priceUSD: price.success[request.assetToBuy]?.usd!,
       quantity: request.quantity,
+      created_by: invoker.username
     });
 
     const newBalance = user.success.balance - amount;
