@@ -20,8 +20,9 @@ export class CreateOrderRequest {
   quantity: number;
 
   @ApiProperty({
-    description: 'UserId which will buy the asset. Only admins can buy assets in name of other users',
-    example: randomUUID()
+    description:
+      'UserId which will buy the asset. Only admins can buy assets in name of other users',
+    example: randomUUID(),
   })
   @IsUUID()
   buyerId: string;

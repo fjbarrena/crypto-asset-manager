@@ -6,17 +6,17 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UserResponse {
   @ApiProperty()
   username: string;
-  
+
   @ApiProperty({
-    enum: Fiat
+    enum: Fiat,
   })
   balanceCurrency: Fiat;
-  
+
   @ApiProperty()
   id: string;
-  
+
   @ApiProperty({
-    enum: Role
+    enum: Role,
   })
   role: Role;
 

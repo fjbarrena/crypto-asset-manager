@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class OrderResponse {
   @ApiProperty({
-    enum: Coins
+    enum: Coins,
   })
   asset: Coins;
 
@@ -31,7 +31,7 @@ export class OrderResponse {
   amountUSD: number;
 
   @ApiProperty({
-    type: UserResponse
+    type: UserResponse,
   })
   buyer: UserResponse;
 

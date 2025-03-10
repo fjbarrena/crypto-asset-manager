@@ -19,7 +19,7 @@ export class CreateUserRequest {
 
   @ApiProperty({
     description: 'Plain password (will be encrypted on the database)',
-    example: "AtLeast10CharsWithUpperLowerAndNumberOrSpecialCharacter"
+    example: 'AtLeast10CharsWithUpperLowerAndNumberOrSpecialCharacter',
   })
   @MinLength(10)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
@@ -33,7 +33,7 @@ export class CreateUserRequest {
 
   @ApiProperty({
     description: 'Role of the user',
-    enum: Role
+    enum: Role,
   })
   @IsEnum(Role)
   role: Role;
@@ -47,7 +47,7 @@ export class CreateUserRequest {
 
   @ApiProperty({
     description: 'Currency in which balance is represented',
-    enum: Fiat
+    enum: Fiat,
   })
   @IsEnum(Fiat)
   balanceCurrency: Fiat;
