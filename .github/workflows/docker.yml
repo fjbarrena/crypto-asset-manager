@@ -44,7 +44,7 @@ jobs:
         echo "Installing grype"
         curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
         
-        grype fjbarrena/crypto-asset-manager:$GITHUB_REF_NAME --fail-on
+        grype fjbarrena/crypto-asset-manager:$GITHUB_REF_NAME --fail-on high
 
     - name: Push image to docker hub
       env:
