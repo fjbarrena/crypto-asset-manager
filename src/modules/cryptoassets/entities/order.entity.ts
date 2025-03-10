@@ -2,7 +2,13 @@ import { BaseEntity } from 'src/entities/base.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Coins } from 'src/model/coins.enum';
 import { User } from 'src/modules/users/entities/user.entity';
-import { IsArray, IsCurrency, IsEnum, IsNumber, IsPositive } from 'class-validator';
+import {
+  IsArray,
+  IsCurrency,
+  IsEnum,
+  IsNumber,
+  IsPositive,
+} from 'class-validator';
 
 @Entity()
 export class Order extends BaseEntity {

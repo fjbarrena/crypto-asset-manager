@@ -96,7 +96,7 @@ describe('OrderService', () => {
           balance: 1000000,
           balanceCurrency: Fiat.EUR,
           username: 'r2d2',
-        }
+        },
       } as Result<User, HttpException>;
 
       const mockPrice = {
@@ -105,7 +105,7 @@ describe('OrderService', () => {
             eur: 100000,
             usd: 100000,
           },
-        }
+        },
       } as Result<CoinsPriceResponse, HttpException>;
 
       const request = new CreateOrderRequest();
@@ -168,7 +168,7 @@ describe('OrderService', () => {
         balance: 10,
         balanceCurrency: Fiat.EUR,
         username: 'r2d2',
-      }
+      },
     } as Result<User, HttpException>;
 
     const mockPrice = {
@@ -177,7 +177,7 @@ describe('OrderService', () => {
           eur: 100000,
           usd: 100000,
         },
-      }
+      },
     } as Result<CoinsPriceResponse, HttpException>;
 
     const request = new CreateOrderRequest();
@@ -205,7 +205,7 @@ describe('OrderService', () => {
         balance: 1000000,
         balanceCurrency: Fiat.EUR,
         username: 'r2d2',
-      }
+      },
     } as Result<User, HttpException>;
 
     const request = new CreateOrderRequest();
@@ -227,7 +227,7 @@ describe('OrderService', () => {
         balance: 10,
         balanceCurrency: Fiat.EUR,
         username: 'r2d2',
-      }
+      },
     } as Result<User, HttpException>;
 
     const request = new CreateOrderRequest();

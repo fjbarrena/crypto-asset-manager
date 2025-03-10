@@ -23,8 +23,11 @@ export class SecurityService {
       );
 
       if (passwordCorrect) {
-        const payload = { sub: user.success.id, username: user.success.username };
-        return new LoginResponse(await this.jwtService.signAsync(payload))
+        const payload = {
+          sub: user.success.id,
+          username: user.success.username,
+        };
+        return new LoginResponse(await this.jwtService.signAsync(payload));
       } else {
         // Give no specific details for security
         throw new UnauthorizedException();

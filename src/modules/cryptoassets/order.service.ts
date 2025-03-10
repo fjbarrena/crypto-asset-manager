@@ -12,7 +12,12 @@ import { Order } from './entities/order.entity';
 import { CreateOrderRequest } from './dto/create_order.request';
 import { CoingeckoService } from './coingecko.service';
 import { UserService } from '../users/users.service';
-import { isFailure, makeFailure, makeSuccess, Result } from 'src/model/result.model';
+import {
+  isFailure,
+  makeFailure,
+  makeSuccess,
+  Result,
+} from 'src/model/result.model';
 import { User } from '../users/entities/user.entity';
 import { OrderResponse } from './dto/order.response';
 
@@ -82,7 +87,8 @@ export class OrderService {
 
     // Take users currency
     const amount =
-      request.quantity * price.success[request.assetToBuy]![user.success.balanceCurrency];
+      request.quantity *
+      price.success[request.assetToBuy]![user.success.balanceCurrency];
 
     if (user.success.balance < amount) {
       return makeFailure(
@@ -110,7 +116,7 @@ export class OrderService {
         .save(dirtyOrder);
       await queryRunner.manager
         .getRepository(User)
-        .update({ id: user.success!.id }, { balance: newBalance });
+        .update({ id: user.success.id }, { balance: newBalance });
       await queryRunner.commitTransaction();
       return makeSuccess(OrderResponse.fromEntity(order));
     } catch (ex) {

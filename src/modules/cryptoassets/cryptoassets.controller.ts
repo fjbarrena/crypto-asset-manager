@@ -36,10 +36,10 @@ export class CryptoassetsController {
       Coins.DOGE,
     ]);
 
-    if(isSuccess(result)) {
-      return result.success
+    if (isSuccess(result)) {
+      return result.success;
     } else {
-      throw result.failure
+      throw result.failure;
     }
   }
 

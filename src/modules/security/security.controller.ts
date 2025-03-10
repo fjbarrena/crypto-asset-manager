@@ -30,10 +30,10 @@ export class SecurityController {
   async createUser(@Body() user: CreateUserRequest): Promise<UserResponse> {
     const createdUser = await this.userService.createUser(user);
 
-    if(isSuccess(createdUser)) {
+    if (isSuccess(createdUser)) {
       return UserResponse.fromEntity(createdUser.success);
     } else {
-      throw createdUser.failure
+      throw createdUser.failure;
     }
   }
 }

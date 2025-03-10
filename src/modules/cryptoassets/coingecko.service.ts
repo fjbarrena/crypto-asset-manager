@@ -1,4 +1,9 @@
-import { HttpException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Settings } from '../../model/settings.enum';
 import { Coins } from 'src/model/coins.enum';
@@ -45,10 +50,10 @@ export class CoingeckoService {
         `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd&precision=full`,
       );
 
-      return makeSuccess(res.data as CoinsPriceResponse)
-    } catch(e) {
-      Logger.error(`Error at getCurrentCoinsPrice with ${coins.join(",")}`)
-      return makeFailure(new InternalServerErrorException(e))
+      return makeSuccess(res.data as CoinsPriceResponse);
+    } catch (e) {
+      Logger.error(`Error at getCurrentCoinsPrice with ${coins.join(',')}`);
+      return makeFailure(new InternalServerErrorException(e));
     }
   }
 }
