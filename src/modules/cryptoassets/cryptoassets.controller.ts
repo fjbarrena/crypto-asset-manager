@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
-  ApiCookieAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -32,10 +31,10 @@ export class CryptoassetsController {
     summary: 'Gets all crypto current prices',
   })
   @ApiResponse({
-      status: 200,
-      description: `Prices of the requested coins`,
-      type: CoinsPriceResponse
-    })
+    status: 200,
+    description: `Prices of the requested coins`,
+    type: CoinsPriceResponse,
+  })
   async getPrices(): Promise<CoinsPriceResponse> {
     const result = await this.coinGeckoService.getCurrentCoinsPrice([
       Coins.BITCOIN,
@@ -55,22 +54,22 @@ export class CryptoassetsController {
     summary: 'Creates a buy order',
   })
   @ApiResponse({
-      status: 201,
-      description: `Order created successfully`,
-      type: OrderResponse
-    })
+    status: 201,
+    description: `Order created successfully`,
+    type: OrderResponse,
+  })
   @ApiResponse({
-      status: 400,
-      description: `Bad request`
-    })
-    @ApiResponse({
-      status: 401,
-      description: `Unauthorized`
-    })
-    @ApiResponse({
-      status: 412,
-      description: `Precondition failed (user does not have enough funds)`
-    })
+    status: 400,
+    description: `Bad request`,
+  })
+  @ApiResponse({
+    status: 401,
+    description: `Unauthorized`,
+  })
+  @ApiResponse({
+    status: 412,
+    description: `Precondition failed (user does not have enough funds)`,
+  })
   async createOrder(
     @Body() order: CreateOrderRequest,
     @JwtToken() token: JwtTokenResponse,
