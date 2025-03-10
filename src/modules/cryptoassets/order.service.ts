@@ -82,7 +82,7 @@ export class OrderService {
 
     // Take users currency
     const amount =
-      request.quantity * price[request.assetToBuy]![user.balanceCurrency]!;
+      request.quantity * price[request.assetToBuy]![user.balanceCurrency];
 
     if (user.balance < amount) {
       return makeFailure(
