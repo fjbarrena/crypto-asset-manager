@@ -67,9 +67,36 @@ Test Suites: 1 passed, 1 total
 Tests:       4 passed, 4 total
 ```
 
-Para ejecutar los tests de integración
+Para ejecutar los tests e2e
 
-TODO
+> Si ya has ejecutado los tests anteriormente, debes borrar la carpeta ./test/data antes de cada ejecución
+
+```shell
+cd test
+docker compose up -d
+```
+
+Y después, vuelve a la carpeta principal del proyecto (donde está ubicado `package.json`) y ejecuta
+
+```shell
+npm run test:cucumber
+```
+
+```shell
+Calling [POST] http://localhost:3000/security/signup
+    Then Check that returned status is 201
+    And Check that response property "username" is "theuser2"
+    And Check that response property "role" is "ADMIN"
+    And Save the response property "id" in the key "theuser2_response.id"
+
+2 scenarios (2 passed)
+19 steps (19 passed)
+0m02.837s (executing steps: 0m02.821s)
+```
+
+Se genera un informe de resultados en `./test-results/cucumber.html`
+
+![](cucumber.png)
 
 # Descripción de la arquitectura
 
