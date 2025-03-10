@@ -90,7 +90,7 @@ export class OrderService {
       );
     }
 
-    const dirtyOrder = this.repository.create({
+    const dirtyOrder = await this.repository.create({
       asset: request.assetToBuy,
       buyer: user,
       priceEUR: price[request.assetToBuy]?.eur!,
@@ -100,7 +100,7 @@ export class OrderService {
 
     const newBalance = user.balance - amount;
 
-    const queryRunner = this.dataSource.createQueryRunner();
+    const queryRunner = await this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
