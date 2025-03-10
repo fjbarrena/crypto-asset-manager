@@ -76,12 +76,14 @@ export class OrderService {
 
     const user = await this.userService.findById(request.buyerId);
 
-    if(request.buyerId !== invoker.sub) {
+    if (request.buyerId !== invoker.sub) {
       // Only admins can create orders in name of other users
       const invokerUser = await this.userService.findById(invoker.sub);
-      if(isSuccess(invokerUser)) {
-        if(invokerUser.success.role !== Role.ADMIN) {
-          return makeFailure(new UnauthorizedException(`Buyer and invoker are not the same`))
+      if (isSuccess(invokerUser)) {
+        if (invokerUser.success.role !== Role.ADMIN) {
+          return makeFailure(
+            new UnauthorizedException(`Buyer and invoker are not the same`),
+          );
         }
       }
     }
@@ -117,7 +119,7 @@ export class OrderService {
       priceEUR: price.success[request.assetToBuy]?.eur!,
       priceUSD: price.success[request.assetToBuy]?.usd!,
       quantity: request.quantity,
-      created_by: invoker.username
+      created_by: invoker.username,
     });
 
     const newBalance = user.success.balance - amount;

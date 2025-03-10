@@ -111,8 +111,8 @@ describe('OrderService', () => {
 
       const mockJwtToken = {
         sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
-        username: 'r2d2'
-      } as JwtTokenResponse
+        username: 'r2d2',
+      } as JwtTokenResponse;
 
       const request = new CreateOrderRequest();
       request.assetToBuy = Coins.BITCOIN;
@@ -179,8 +179,8 @@ describe('OrderService', () => {
 
     const mockJwtToken = {
       sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
-      username: 'r2d2'
-    } as JwtTokenResponse
+      username: 'r2d2',
+    } as JwtTokenResponse;
 
     const mockPrice = {
       success: {
@@ -221,8 +221,8 @@ describe('OrderService', () => {
 
     const mockJwtToken = {
       sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
-      username: 'r2d2'
-    } as JwtTokenResponse
+      username: 'r2d2',
+    } as JwtTokenResponse;
 
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;
@@ -248,8 +248,8 @@ describe('OrderService', () => {
 
     const mockJwtToken = {
       sub: '3839a7ec-9526-478c-95ce-596e6b11c638',
-      username: 'r2d2'
-    } as JwtTokenResponse
+      username: 'r2d2',
+    } as JwtTokenResponse;
 
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;

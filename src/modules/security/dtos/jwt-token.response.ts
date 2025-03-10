@@ -3,5 +3,5 @@ export class JwtTokenResponse {
   username: string;
   iat: number;
   exp: number;
-  iss: string
+  iss: string;
 }

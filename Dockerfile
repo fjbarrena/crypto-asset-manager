@@ -4,14 +4,14 @@ FROM node:22.14-alpine AS builder
 WORKDIR /app
 # Copy files required to build the application
 COPY package*.json tsconfig.* ./
-RUN npm install --force
+RUN npm install
 # Copy the sources
 COPY src ./src/
 
 # Build the application (leaves result on ./dist)
 RUN npm run build
 # Execute `npm ci` (not install) for production with an externally mounted npmrc
-RUN npm ci --omit=dev --ignore-scripts --force
+RUN npm ci --omit=dev --ignore-scripts
 
 # Production image
 FROM node:22.14-alpine AS service

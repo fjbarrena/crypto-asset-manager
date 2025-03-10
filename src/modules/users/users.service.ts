@@ -30,7 +30,7 @@ export class UserService {
         role: request.role,
         balance: request.initialBalance,
         balanceCurrency: request.balanceCurrency || Fiat.USD,
-        created_by: request.username
+        created_by: request.username,
       });
 
       const user = await this.userRepository.save(dirtyCreate);
