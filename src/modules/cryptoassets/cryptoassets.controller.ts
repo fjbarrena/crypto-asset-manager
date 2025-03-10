@@ -13,6 +13,8 @@ import { isSuccess } from 'src/model/result.model';
 import { OrderResponse } from './dto/order.response';
 import { CoinsPriceResponse } from './dto/coins_price.response';
 import { JwtGuard } from '../security/guards/jwt.guard';
+import { JwtToken } from 'src/decorators/jwt-token.decorator';
+import { JwtTokenResponse } from '../security/dtos/jwt-token.response';
 
 @ApiTags('cryptoassets')
 @ApiBearerAuth()
@@ -44,8 +46,9 @@ export class CryptoassetsController {
   }
 
   @Post('/order')
-  async createOrder(@Body() order: CreateOrderRequest): Promise<OrderResponse> {
-    const result = await this.orderService.createOrder(order);
+  async createOrder(@Body() order: CreateOrderRequest, @JwtToken() token: JwtTokenResponse): Promise<OrderResponse> {
+    console.log(token)
+    const result = await this.orderService.createOrder(order, token.sub);
 
     if (isSuccess(result)) {
       return result.success;

@@ -8,6 +8,7 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
+import { Fiat } from 'src/model/fiat.enum';
 
 export class CreateUserRequest {
   @ApiProperty({
@@ -41,4 +42,10 @@ export class CreateUserRequest {
   @IsNumber()
   @IsPositive()
   initialBalance: number;
+
+  @ApiProperty({
+    description: 'Initial balance of the user',
+  })
+  @IsEnum(Fiat)
+  balanceCurrency: Fiat;
 }

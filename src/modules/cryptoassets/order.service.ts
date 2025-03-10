@@ -5,6 +5,7 @@ import {
   InternalServerErrorException,
   Logger,
   PreconditionFailedException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,12 +15,14 @@ import { CoingeckoService } from './coingecko.service';
 import { UserService } from '../users/users.service';
 import {
   isFailure,
+  isSuccess,
   makeFailure,
   makeSuccess,
   Result,
 } from 'src/model/result.model';
 import { User } from '../users/entities/user.entity';
 import { OrderResponse } from './dto/order.response';
+import { Role } from '../users/enums/role.enum';
 
 @Injectable()
 export class OrderService {
@@ -62,6 +65,7 @@ export class OrderService {
   */
   async createOrder(
     request: CreateOrderRequest,
+    invokerId: string,
   ): Promise<Result<OrderResponse, HttpException>> {
     if (request.quantity <= 0) {
       return makeFailure(
@@ -70,6 +74,16 @@ export class OrderService {
     }
 
     const user = await this.userService.findById(request.buyerId);
+
+    if(request.buyerId !== invokerId) {
+      // Only admins can create orders in name of other users
+      const invokerUser = await this.userService.findById(invokerId);
+      if(isSuccess(invokerUser)) {
+        if(invokerUser.success.role !== Role.ADMIN) {
+          return makeFailure(new UnauthorizedException(`Buyer and invoker are not the same`))
+        }
+      }
+    }
 
     if (isFailure(user)) {
       return makeFailure(new BadRequestException('BuyerId does not exist'));

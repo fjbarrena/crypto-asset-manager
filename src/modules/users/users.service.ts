@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserRequest } from './dtos/create_user.request';
 import { BcryptService } from '../security/bcrypt.service';
 import { makeFailure, makeSuccess, Result } from 'src/model/result.model';
+import { Fiat } from 'src/model/fiat.enum';
 
 @Injectable()
 export class UserService {
@@ -28,6 +29,7 @@ export class UserService {
         encryptedPassword: BcryptService.hashPassword(request.plainPassword),
         role: request.role,
         balance: request.initialBalance,
+        balanceCurrency: request.balanceCurrency || Fiat.USD
       });
 
       const user = await this.userRepository.save(dirtyCreate);

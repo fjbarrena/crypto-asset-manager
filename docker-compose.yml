@@ -9,3 +9,27 @@ services:
       - POSTGRES_PASSWORD=super_strong_password
       - POSTGRES_USER=crypto_admin
       - POSTGRES_DB=crypto_db
+    networks:
+      - crypto-net
+    
+  # backend:
+  #   image: fjbarrena/crypto-asset-manager:latest
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     - COINGECKO_API_KEY=
+  #     - COINGECKO_API_BASE_URL=https://api.coingecko.com/api/v3
+  #     - DATABASE_HOST=postgres
+  #     - DATABASE_PORT=5432
+  #     - DATABASE_USER=crypto_admin
+  #     - DATABASE_PASSWORD=super_strong_password
+  #     - DATABASE_NAME=crypto_db
+  #     - DATABASE_LOGGING=true
+  #     - JWT_SECRET=dKXx9a6k$6gpQHS9ultB&8E32N5btFHJ
+  #     - JWT_EXPIRES_IN=60s
+  #     - JWT_ISSUER=crypto-asset-manager-issuer
+  #   networks:
+  #     - crypto-net
+
+networks:
+  crypto-net:
