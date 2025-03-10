@@ -5,6 +5,8 @@ services:
       - 5432:5432
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+      - ./database/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+
     environment:
       - POSTGRES_PASSWORD=super_strong_password
       - POSTGRES_USER=crypto_admin

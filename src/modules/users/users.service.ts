@@ -29,7 +29,8 @@ export class UserService {
         encryptedPassword: BcryptService.hashPassword(request.plainPassword),
         role: request.role,
         balance: request.initialBalance,
-        balanceCurrency: request.balanceCurrency || Fiat.USD
+        balanceCurrency: request.balanceCurrency || Fiat.USD,
+        created_by: request.username
       });
 
       const user = await this.userRepository.save(dirtyCreate);

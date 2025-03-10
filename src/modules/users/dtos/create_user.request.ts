@@ -26,7 +26,7 @@ export class CreateUserRequest {
       'Passwords will contain at least 1 upper case letter',
       'Passwords will contain at least 1 lower case letter',
       'Passwords will contain at least 1 number or special character',
-    ].join('\n'),
+    ].join(' - '),
   })
   plainPassword: string;
 
