@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource, Repository, SelectQueryBuilder } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Order } from './entities/order.entity';
 import { ContextIdFactory } from '@nestjs/core';
 import { OrderService } from './order.service';

@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import path from 'path';
 
 export class TestContext {
-  public static storedValues: Map<String, any>;
+  public static storedValues: Map<string, any>;
   public static jwt: string;
 
   static {
@@ -40,7 +40,7 @@ export class TestContext {
    */
   public static replaceValues(data: string): any {
     while (data.includes('${')) {
-      let propertyName = data.substring(
+      const propertyName = data.substring(
         data.indexOf('${') + 2,
         data.indexOf('}'),
       );
@@ -56,7 +56,7 @@ export class TestContext {
 
   public static replaceStoredValues(data: string): any {
     while (data.includes('${storedValues.')) {
-      let propertyName = data.substring(
+      const propertyName = data.substring(
         data.indexOf('${storedValues.') + 15,
         data.indexOf('}'),
       );

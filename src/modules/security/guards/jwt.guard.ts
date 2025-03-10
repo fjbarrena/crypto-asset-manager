@@ -17,16 +17,20 @@ export class JwtGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    // eslint-disable-next-line
     const request = context.switchToHttp().getRequest();
+    // eslint-disable-next-line
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException();
     }
     try {
+      // eslint-disable-next-line
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>(Settings.JWT_SECRET),
       });
 
+      // eslint-disable-next-line
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException();

@@ -113,10 +113,13 @@ export class OrderService {
       );
     }
 
+    // eslint-disable-next-line
     const dirtyOrder = await this.repository.create({
       asset: request.assetToBuy,
       buyer: user.success,
+      // eslint-disable-next-line
       priceEUR: price.success[request.assetToBuy]?.eur!,
+      // eslint-disable-next-line
       priceUSD: price.success[request.assetToBuy]?.usd!,
       quantity: request.quantity,
       created_by: invoker.username,
@@ -124,6 +127,7 @@ export class OrderService {
 
     const newBalance = user.success.balance - amount;
 
+    // eslint-disable-next-line
     const queryRunner = await this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();

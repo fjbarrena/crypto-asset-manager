@@ -1,11 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCookieAuth,
@@ -14,12 +7,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CoingeckoService } from './coingecko.service';
-import { Coins } from 'src/model/coins.enum';
 import { OrderService } from './order.service';
 import { CreateOrderRequest } from './dto/create_order.request';
 import { isSuccess } from 'src/model/result.model';
 import { OrderResponse } from './dto/order.response';
-import { CoinsPriceResponse } from './dto/coins_price.response';
 import { JwtGuard } from '../security/guards/jwt.guard';
 import { JwtToken } from 'src/decorators/jwt-token.decorator';
 import { JwtTokenResponse } from '../security/dtos/jwt-token.response';
