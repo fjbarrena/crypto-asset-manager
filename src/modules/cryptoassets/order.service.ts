@@ -12,11 +12,7 @@ import { Order } from './entities/order.entity';
 import { CreateOrderRequest } from './dto/create_order.request';
 import { CoingeckoService } from './coingecko.service';
 import { UserService } from '../users/users.service';
-import {
-  makeFailure,
-  makeSuccess,
-  Result,
-} from 'src/model/result.model';
+import { makeFailure, makeSuccess, Result } from 'src/model/result.model';
 import { User } from '../users/entities/user.entity';
 import { OrderResponse } from './dto/order.response';
 

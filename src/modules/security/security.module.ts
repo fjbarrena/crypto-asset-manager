@@ -6,10 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import JwtConfiguration from 'src/security.config';
 
 @Module({
-  imports: [
-    UsersModule,
-    JwtModule.register(JwtConfiguration),
-  ],
+  imports: [UsersModule, JwtModule.register(JwtConfiguration)],
   providers: [SecurityService],
   controllers: [SecurityController],
 })

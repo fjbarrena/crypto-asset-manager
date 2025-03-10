@@ -24,7 +24,6 @@ export class UserService {
 
     const user = await this.userRepository.save(dirtyCreate);
 
-    
     return UserResponse.fromEntity(user);
   }
 

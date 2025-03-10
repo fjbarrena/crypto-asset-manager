@@ -8,12 +8,12 @@ config();
 const configService = new ConfigService();
 
 const JwtConfiguration = {
-    global: true,
-    secret: configService.get<string>(Settings.JWT_SECRET),
-    signOptions: {
-      expiresIn: configService.get<string>(Settings.JWT_EXPIRES_IN),
-      issuer: configService.get<string>(Settings.JWT_ISSUER),
-    }
-}
+  global: true,
+  secret: configService.get<string>(Settings.JWT_SECRET),
+  signOptions: {
+    expiresIn: configService.get<string>(Settings.JWT_EXPIRES_IN),
+    issuer: configService.get<string>(Settings.JWT_ISSUER),
+  },
+};
 
 export default JwtConfiguration as JwtModuleOptions;

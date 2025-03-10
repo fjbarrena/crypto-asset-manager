@@ -16,7 +16,10 @@ import { UserResponse } from '../users/dtos/user.response';
 @ApiTags('security')
 @Controller('security')
 export class SecurityController {
-  constructor(private readonly securityService: SecurityService, private readonly userService: UserService) {}
+  constructor(
+    private readonly securityService: SecurityService,
+    private readonly userService: UserService,
+  ) {}
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
