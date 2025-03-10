@@ -5,6 +5,7 @@ import { LoginRequest } from './dtos/login.request';
 import { UserService } from '../users/users.service';
 import { CreateUserRequest } from '../users/dtos/create_user.request';
 import { UserResponse } from '../users/dtos/user.response';
+import { isSuccess } from 'src/model/result.model';
 
 @ApiTags('security')
 @Controller('security')
@@ -26,6 +27,12 @@ export class SecurityController {
     summary: 'Allows users to create an account',
   })
   async createUser(@Body() user: CreateUserRequest): Promise<UserResponse> {
-    return this.userService.createUser(user);
+    const createdUser = await this.userService.createUser(user);
+
+    if(isSuccess(createdUser)) {
+      return UserResponse.fromEntity(createdUser.success);
+    } else {
+      throw createdUser.failure
+    }
   }
 }

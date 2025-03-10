@@ -12,7 +12,7 @@ import { Order } from './entities/order.entity';
 import { CreateOrderRequest } from './dto/create_order.request';
 import { CoingeckoService } from './coingecko.service';
 import { UserService } from '../users/users.service';
-import { makeFailure, makeSuccess, Result } from 'src/model/result.model';
+import { isFailure, makeFailure, makeSuccess, Result } from 'src/model/result.model';
 import { User } from '../users/entities/user.entity';
 import { OrderResponse } from './dto/order.response';
 
@@ -66,7 +66,7 @@ export class OrderService {
 
     const user = await this.userService.findById(request.buyerId);
 
-    if (!user) {
+    if (isFailure(user)) {
       return makeFailure(new BadRequestException('BuyerId does not exist'));
     }
 
@@ -82,9 +82,9 @@ export class OrderService {
 
     // Take users currency
     const amount =
-      request.quantity * price[request.assetToBuy]![user.balanceCurrency];
+      request.quantity * price[request.assetToBuy]![user.success.balanceCurrency];
 
-    if (user.balance < amount) {
+    if (user.success.balance < amount) {
       return makeFailure(
         new PreconditionFailedException('User does not have enough funds'),
       );
@@ -92,13 +92,13 @@ export class OrderService {
 
     const dirtyOrder = await this.repository.create({
       asset: request.assetToBuy,
-      buyer: user,
+      buyer: user.success,
       priceEUR: price[request.assetToBuy]?.eur!,
       priceUSD: price[request.assetToBuy]?.usd!,
       quantity: request.quantity,
     });
 
-    const newBalance = user.balance - amount;
+    const newBalance = user.success.balance - amount;
 
     const queryRunner = await this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -110,7 +110,7 @@ export class OrderService {
         .save(dirtyOrder);
       await queryRunner.manager
         .getRepository(User)
-        .update({ id: user.id }, { balance: newBalance });
+        .update({ id: user.success!.id }, { balance: newBalance });
       await queryRunner.commitTransaction();
       return makeSuccess(OrderResponse.fromEntity(order));
     } catch (ex) {

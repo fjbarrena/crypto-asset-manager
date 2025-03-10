@@ -13,7 +13,8 @@ import { CreateOrderRequest } from './dto/create_order.request';
 import { Coins } from 'src/model/coins.enum';
 import { Fiat } from 'src/model/fiat.enum';
 import { CoinsPriceResponse } from './dto/coins_price.response';
-import { isFailure, isSuccess } from 'src/model/result.model';
+import { isFailure, isSuccess, Result } from 'src/model/result.model';
+import { HttpException } from '@nestjs/common';
 
 export type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
@@ -90,11 +91,13 @@ describe('OrderService', () => {
   describe('Create a new order', () => {
     it('if all data is correct, creates the order successfully', async () => {
       const mockUser = {
-        id: '3839a7ec-9526-478c-95ce-596e6b11c638',
-        balance: 1000000,
-        balanceCurrency: Fiat.EUR,
-        username: 'r2d2',
-      } as User;
+        success: {
+          id: '3839a7ec-9526-478c-95ce-596e6b11c638',
+          balance: 1000000,
+          balanceCurrency: Fiat.EUR,
+          username: 'r2d2',
+        }
+      } as Result<User, HttpException>;
 
       const mockPrice = {
         bitcoin: {
@@ -106,7 +109,7 @@ describe('OrderService', () => {
       const request = new CreateOrderRequest();
       request.assetToBuy = Coins.BITCOIN;
       request.quantity = 1;
-      request.buyerId = mockUser.id;
+      request.buyerId = mockUser.success!.id;
 
       jest.spyOn(userService, 'findById').mockResolvedValueOnce(mockUser);
 
@@ -116,7 +119,7 @@ describe('OrderService', () => {
 
       jest.spyOn(orderRepository, 'create').mockResolvedValueOnce({
         asset: request.assetToBuy,
-        buyer: mockUser,
+        buyer: mockUser.success,
         priceEUR: mockPrice[request.assetToBuy]?.eur!,
         priceUSD: mockPrice[request.assetToBuy]?.usd!,
         quantity: request.quantity,
@@ -150,7 +153,7 @@ describe('OrderService', () => {
       expect(isSuccess(response)).toBeTruthy();
       expect(response.failure).toBeUndefined();
       expect(response.success).not.toBeUndefined();
-      expect(response.success?.buyer.id).toBe(mockUser.id);
+      expect(response.success?.buyer.id).toBe(mockUser.success!.id);
       expect(response.success?.quantity).toBe(request.quantity);
       expect(response.success?.asset).toBe(request.assetToBuy);
     });
@@ -158,11 +161,13 @@ describe('OrderService', () => {
 
   it('fails if user has not enough funds', async () => {
     const mockUser = {
-      id: '3839a7ec-9526-478c-95ce-596e6b11c638',
-      balance: 10,
-      balanceCurrency: Fiat.EUR,
-      username: 'r2d2',
-    } as User;
+      success: {
+        id: '3839a7ec-9526-478c-95ce-596e6b11c638',
+        balance: 10,
+        balanceCurrency: Fiat.EUR,
+        username: 'r2d2',
+      }
+    } as Result<User, HttpException>;
 
     const mockPrice = {
       bitcoin: {
@@ -174,7 +179,7 @@ describe('OrderService', () => {
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;
     request.quantity = 1;
-    request.buyerId = mockUser.id;
+    request.buyerId = mockUser.success!.id;
 
     jest.spyOn(userService, 'findById').mockResolvedValueOnce(mockUser);
 
@@ -191,16 +196,18 @@ describe('OrderService', () => {
 
   it('fails if quantity is equal or lower than zero', async () => {
     const mockUser = {
-      id: '3839a7ec-9526-478c-95ce-596e6b11c638',
-      balance: 10,
-      balanceCurrency: Fiat.EUR,
-      username: 'r2d2',
-    } as User;
+      success: {
+        id: '3839a7ec-9526-478c-95ce-596e6b11c638',
+        balance: 1000000,
+        balanceCurrency: Fiat.EUR,
+        username: 'r2d2',
+      }
+    } as Result<User, HttpException>;
 
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;
     request.quantity = 0;
-    request.buyerId = mockUser.id;
+    request.buyerId = mockUser.success!.id;
 
     const response = await orderService.createOrder(request);
     expect(isFailure(response)).toBeTruthy();
@@ -211,16 +218,18 @@ describe('OrderService', () => {
 
   it('fails if quantity is equal or lower than zero', async () => {
     const mockUser = {
-      id: '3839a7ec-9526-478c-95ce-596e6b11c638',
-      balance: 10,
-      balanceCurrency: Fiat.EUR,
-      username: 'r2d2',
-    } as User;
+      success: {
+        id: '3839a7ec-9526-478c-95ce-596e6b11c638',
+        balance: 10,
+        balanceCurrency: Fiat.EUR,
+        username: 'r2d2',
+      }
+    } as Result<User, HttpException>;
 
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;
     request.quantity = 0;
-    request.buyerId = mockUser.id;
+    request.buyerId = mockUser.success!.id;
 
     const response = await orderService.createOrder(request);
     expect(isFailure(response)).toBeTruthy();
