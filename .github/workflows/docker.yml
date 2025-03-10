@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Docker build and push
+    - name: Docker build
       env:
         DOCKER_USER: ${{secrets.DOCKER_HUB_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_HUB_TOKEN}}
@@ -36,8 +36,6 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         docker build --file Dockerfile --tag fjbarrena/crypto-asset-manager:$GITHUB_REF_NAME .
         docker build --file Dockerfile --tag fjbarrena/crypto-asset-manager .
-        docker push fjbarrena/crypto-asset-manager:$GITHUB_REF_NAME
-        docker push fjbarrena/crypto-asset-manager:latest    
     - name: Check image vulnerabilities
       env:
         DOCKER_USER: ${{secrets.DOCKER_HUB_USERNAME}}
@@ -46,4 +44,12 @@ jobs:
         echo "Installing grype"
         curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
         
-        grype fjbarrena/crypto-asset-manager:$GITHUB_REF_NAME
+        grype fjbarrena/crypto-asset-manager:$GITHUB_REF_NAME --fail-on
+
+    - name: Push image to docker hub
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_HUB_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_HUB_TOKEN}}
+      run: |
+        docker push fjbarrena/crypto-asset-manager:$GITHUB_REF_NAME
+        docker push fjbarrena/crypto-asset-manager:latest    
