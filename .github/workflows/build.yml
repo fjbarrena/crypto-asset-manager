@@ -15,4 +15,5 @@ jobs:
           node-version: '22.14.X'
       - run: npm ci
       - run: npm run build --if-present
+      - run: npm run lint:nofix && (echo "Linter true success" >> git-status.txt) || (echo; "Linter false fail"; exit 2) >> git-status.txt
       - run: npm test
