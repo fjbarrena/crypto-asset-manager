@@ -1,9 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Settings } from '../../model/settings.enum';
 import { Coins } from 'src/model/coins.enum';
 import axios, { AxiosInstance } from 'axios';
 import { CoinsPriceResponse } from './dto/coins_price.response';
+import { makeFailure, makeSuccess, Result } from 'src/model/result.model';
 
 @Injectable()
 export class CoingeckoService {
@@ -38,11 +39,16 @@ export class CoingeckoService {
 
   public async getCurrentCoinsPrice(
     coins: Coins[],
-  ): Promise<CoinsPriceResponse> {
-    const res = await this.axiosClient.get(
-      `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd&precision=full`,
-    );
+  ): Promise<Result<CoinsPriceResponse, HttpException>> {
+    try {
+      const res = await this.axiosClient.get(
+        `/simple/price?ids=${coins.join(',')}&vs_currencies=eur,usd&precision=full`,
+      );
 
-    return res.data as CoinsPriceResponse;
+      return makeSuccess(res.data as CoinsPriceResponse)
+    } catch(e) {
+      Logger.error(`Error at getCurrentCoinsPrice with ${coins.join(",")}`)
+      return makeFailure(new InternalServerErrorException(e))
+    }
   }
 }

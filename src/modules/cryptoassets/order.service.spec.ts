@@ -100,11 +100,13 @@ describe('OrderService', () => {
       } as Result<User, HttpException>;
 
       const mockPrice = {
-        bitcoin: {
-          eur: 1000,
-          usd: 990,
-        },
-      } as CoinsPriceResponse;
+        success: {
+          bitcoin: {
+            eur: 100000,
+            usd: 100000,
+          },
+        }
+      } as Result<CoinsPriceResponse, HttpException>;
 
       const request = new CreateOrderRequest();
       request.assetToBuy = Coins.BITCOIN;
@@ -120,8 +122,8 @@ describe('OrderService', () => {
       jest.spyOn(orderRepository, 'create').mockResolvedValueOnce({
         asset: request.assetToBuy,
         buyer: mockUser.success,
-        priceEUR: mockPrice[request.assetToBuy]?.eur!,
-        priceUSD: mockPrice[request.assetToBuy]?.usd!,
+        priceEUR: mockPrice.success![request.assetToBuy]?.eur!,
+        priceUSD: mockPrice.success![request.assetToBuy]?.usd!,
         quantity: request.quantity,
       } as never);
 
@@ -170,11 +172,13 @@ describe('OrderService', () => {
     } as Result<User, HttpException>;
 
     const mockPrice = {
-      bitcoin: {
-        eur: 100000,
-        usd: 100000,
-      },
-    } as CoinsPriceResponse;
+      success: {
+        bitcoin: {
+          eur: 100000,
+          usd: 100000,
+        },
+      }
+    } as Result<CoinsPriceResponse, HttpException>;
 
     const request = new CreateOrderRequest();
     request.assetToBuy = Coins.BITCOIN;

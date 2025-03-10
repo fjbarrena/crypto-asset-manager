@@ -74,7 +74,7 @@ export class OrderService {
       request.assetToBuy,
     ]);
 
-    if (!price) {
+    if (isFailure(price)) {
       return makeFailure(
         new BadRequestException('Specified asset to buy does not exist'),
       );
@@ -82,7 +82,7 @@ export class OrderService {
 
     // Take users currency
     const amount =
-      request.quantity * price[request.assetToBuy]![user.success.balanceCurrency];
+      request.quantity * price.success[request.assetToBuy]![user.success.balanceCurrency];
 
     if (user.success.balance < amount) {
       return makeFailure(
@@ -93,8 +93,8 @@ export class OrderService {
     const dirtyOrder = await this.repository.create({
       asset: request.assetToBuy,
       buyer: user.success,
-      priceEUR: price[request.assetToBuy]?.eur!,
-      priceUSD: price[request.assetToBuy]?.usd!,
+      priceEUR: price.success[request.assetToBuy]?.eur!,
+      priceUSD: price.success[request.assetToBuy]?.usd!,
       quantity: request.quantity,
     });
 
