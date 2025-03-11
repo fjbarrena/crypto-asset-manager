@@ -46,21 +46,21 @@ Después, instalar las dependencias
 npm install
 ```
 
-Luego, levanta la base de datos. Para ello abre el fichero docker-compose.yml y comenta las líneas del servicio `backend`, ya que en desarrollo tu levantarás tu propio servidor
+Luego, levanta la base de datos. Para ello abre el fichero docker-compose.yml y comenta las líneas del servicio `backend`, ya que en desarrollo tú levantarás tu propio servidor
 
-Luego arranca la base de datos con
+Luego arranca la base de datos con:
 
 ```shell
 docker compose up -d
 ```
 
-Y finalmente arranca tu servidor local con
+Y finalmente arranca tu servidor local con:
 
 ```shell
 npm run start
 ```
 
-O si quieres hot-reloading
+O si quieres hot-reloading:
 
 ```shell
 npm run start:debug
@@ -95,7 +95,9 @@ Tests:       4 passed, 4 total
 
 Para ejecutar los tests e2e
 
-> Si ya has ejecutado los tests anteriormente, debes borrar la carpeta ./test/data antes de cada ejecución
+> Si ya has ejecutado los tests anteriormente, debes borrar la carpeta ./test/data antes de cada ejecución, de lo contrario no limpiará los datos y los tests fallarán.
+
+> ⚠️ Recuerda revisar las variables de entorno en `./test/docker-compose.yml` y añadir tu API key de CoinGecko en `COINGECKO_API_KEY`.
 
 ```shell
 cd test
