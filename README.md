@@ -2,6 +2,8 @@
 
 Para ejecutar el proyecto, sencillamente ejecuta
 
+> Puedes abrir el fichero `docker-compose.yml` y cambiar las variables de entorno que necesites
+
 ```shell
 docker compose up -d
 ```
@@ -15,9 +17,9 @@ El flujo recomendado es:
 3) Clickar sobre el botón `Authorize` e introducir el token JWT
 4) Crear una orden de compra a través del endpoint `/criptoassets/order`
 
-# Variables de entorno
+# Configurar entorno de desarrollo
 
-El sistema es configurable desde fuera a través de las siguientes variables de entorno
+Crear un fichero `.env` en la raíz del proyecto, con los siguientes valores
 
 ```env
 # Coingecko
@@ -36,6 +38,32 @@ DATABASE_LOGGING=true
 JWT_SECRET=dKXx9a6k$6gpQHS9ultB&8E32N5btFHJ
 JWT_EXPIRES_IN=2h
 JWT_ISSUER=crypto-asset-manager-issuer
+```
+
+Después, instalar las dependencias 
+
+```shell
+npm install
+```
+
+Luego, levanta la base de datos. Para ello abre el fichero docker-compose.yml y comenta las líneas del servicio `backend`, ya que en desarrollo tu levantarás tu propio servidor
+
+Luego arranca la base de datos con
+
+```shell
+docker compose up -d
+```
+
+Y finalmente arranca tu servidor local con
+
+```shell
+npm run start
+```
+
+O si quieres hot-reloading
+
+```shell
+npm run start:debug
 ```
 
 # Tests
