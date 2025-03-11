@@ -175,6 +175,7 @@ Se han configurado dos flujos de CI/CD
   * Se ejecuta siempre, ante cualquier push o acción
   * Instala dependencias
   * Hace el build
+  * Pasa el lintern
   * Ejecuta los tests
 * `publish-docker-hub`
   * Se ejecuta cuando se hace un tag en git
